@@ -6,3 +6,4 @@ flask-mail
 flask-wtf
 itsdangerous
 python-dotenv
+markupsafe
