@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Send one{% endblock %}
+
+{% block content %}
+
+<form action="/send-rose" method="POST">
+
+<!-- Steo 1 -->
+<div id="step1">
+
+    <h2>Who shall recieve the roses?</h2>
+
+    <input type="text" name="recipient_name" placeholder="Name">
+    <input type="email" name="recipient_email" placeholder="E-Mail" required>
+
+    <button type="button" onclick="showStep(2)">
+        Continue
+    </button>
+
+</div>
+
+<!-- Step 2 -->
+<div id="step2" hidden>
+
+    <h2>Message</h2>
+
+    <textarea name="message" length="200" placeholder="Your nice words..." required></textarea>
+
+    <br>
+
+    <button type="button" onclick="showStep(1)">
+        Back
+    </button>
+
+    <button type="button" onclick="showStep(3)">
+        Preview
+    </button>
+
+</div>
+
+<!-- Step 3 -->
+<div id="step3" hidden>
+
+    <h2>Confirm</h2>
+
+    <p id="preview"></p>
+
+    <button type="button" onclick="showStep(2)">
+        Back
+    </button>
+
+    <button type="submit">
+        Send the Rose 🌹
+    </button>
+
+</div>
+
+</form>
+
+<script>
+
+function showStep(step) {
+
+    document.getElementById("step1").hidden = true;
+    document.getElementById("step2").hidden = true;
+    document.getElementById("step3").hidden = true;
+
+    document.getElementById("step" + step).hidden = false;
+
+  // Vorschau
+    if (step === 3) {
+
+    const email =
+        document.querySelector(
+        '[name="email"]'
+    ).value;
+
+    const message =
+        document.querySelector(
+        '[name="message"]'
+    ).value;
+
+    document.getElementById("preview").innerText =
+    "The lucky one: " + email + "\n\n" + message;
+}
+}
+
+</script>
+
+{% endblock %}
