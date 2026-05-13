@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, redirect, render_template
+from flask import Blueprint, request, jsonify, redirect, render_template, session
 from markupsafe import escape
 
 from app import db, bcrypt
@@ -21,7 +21,8 @@ def login():
 
         user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.password_hash, password):
-            return redirect("/roses"), 200
+            session["user_id"] = user.id
+            return redirect("/roses_dashboard"), 200
         else:
             return jsonify({"message": "Invalid email or password"}), 401
     return render_template("login.html")
@@ -46,3 +47,9 @@ def register():
         return redirect("/login")
 
     return render_template("register.html")
+
+
+@auth.route("/logout")
+def logout():
+    session.pop("user_id", None)
+    return redirect("/")
