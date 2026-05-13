@@ -51,5 +51,5 @@ def register():
 
 @auth.route("/logout")
 def logout():
-    session.pop("user_id", None)
+    session.clear()
     return redirect("/")
