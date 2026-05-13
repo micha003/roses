@@ -18,7 +18,7 @@ def create_app():
     db.init_app(app)
     bcrypt.init_app(app)
 
-    from .models import User
+    from .models import User, Rose
 
     with app.app_context():
         db.create_all()
