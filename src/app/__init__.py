@@ -9,7 +9,7 @@ bcrypt = Bcrypt()
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, instance_path="/tmp")
 
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") or os.urandom(24)
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///roses.db"
