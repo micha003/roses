@@ -7,4 +7,3 @@ flask-wtf
 itsdangerous
 python-dotenv
 markupsafe
-sqlite3
