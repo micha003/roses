@@ -7,3 +7,4 @@ flask-wtf
 itsdangerous
 python-dotenv
 markupsafe
+resend
