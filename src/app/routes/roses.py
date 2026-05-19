@@ -8,7 +8,7 @@ from app.utils.validators import (
     is_valid_name,
     is_valid_message,
     sanitize_string,
-    rate_limit
+    rate_limit,
 )
 
 from functools import wraps
@@ -22,6 +22,7 @@ def login_required(fn):
         if "user_id" not in session:
             return redirect("/login")
         return fn(*args, **kwargs)
+
     return wrapper
 
 
@@ -39,15 +40,17 @@ def send_rose():
         data = request.form
 
         # Get current user safely using ORM (no raw SQL)
-        user_id = session.get('user_id')
+        user_id = session.get("user_id")
         current_user = User.query.get(user_id)
-        
+
         if not current_user:
             flash("Session expired. Please log in again.", "error")
             return redirect("/login")
 
         # Sanitize and validate recipient email
-        recipient_email = sanitize_string(data.get("recipient_email", ""), max_length=254)
+        recipient_email = sanitize_string(
+            data.get("recipient_email", ""), max_length=254
+        )
         is_valid, error_msg = is_valid_email(recipient_email)
         if not is_valid:
             flash(f"Invalid recipient email: {error_msg}", "error")
@@ -85,8 +88,9 @@ def send_rose():
 
         # Send the email
         try:
-            from app.Scripts.send_rose import send_email
-            sender_display_name = current_user.name or "Someone special"
+            from app.scripts.send_rose import send_email
+
+            sender_display_name = current_user.name
             send_email(sender_display_name, str(recipient_email), str(message))
             flash("Your rose has been sent!", "success")
         except Exception as e:
