@@ -24,14 +24,14 @@ def login_required(fn):
     return wrapper
 
 
-@login_required
 @roses.route("/")
+@login_required
 def dashboard():
     return render_template("roses_dashboard.html")
 
 
-@login_required
 @roses.route("/send_rose", methods=["GET", "POST"])
+@login_required
 def send_rose():
     if request.method == "POST":
         data = request.form

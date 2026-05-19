@@ -22,9 +22,9 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.password_hash, password):
             session["user_id"] = user.id
-            return redirect("/roses_dashboard"), 200
+            return redirect("/roses"), 200
         else:
-            return jsonify({"message": "Invalid email or password"}), 401
+            return render_template("login.html", error="Invalid email or password"), 401
     return render_template("login.html")
 
 
