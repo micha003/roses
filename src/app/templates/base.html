@@ -4,8 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roses - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    {% block content %}{% endblock %}
+    <div class="page-shell">
+        <header class="site-brand">
+            <div class="brand">Roses</div>
+        </header>
+
+        <main class="content-wrapper">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="page-footer">
+            Crafted in soft pastel pink and deep charcoal tones.
+        </footer>
+    </div>
 </body>
 </html>
