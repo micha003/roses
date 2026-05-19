@@ -8,7 +8,8 @@
 {% endblock %}
 
 {% block content %}
-<form action="/send-rose" method="POST" id="roseForm">
+<form action="/roses/send_rose" method="POST" id="roseForm">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
 <!-- Step Indicator -->
 <div class="step-indicator">

@@ -12,7 +12,7 @@
     <p class="auth-subtitle">Sign in to continue sending roses.</p>
     
     <form method="post" action="/login">
-        {{ csrf_token }}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         
         <div class="form-group">
             <label for="email">Email Address</label>

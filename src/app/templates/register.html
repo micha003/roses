@@ -12,6 +12,7 @@
     <p class="auth-subtitle">Create an account to start spreading love.</p>
     
     <form method="post" action="/register">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="form-group">
             <label for="email">Email Address</label>
             <input 
