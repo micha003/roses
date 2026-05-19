@@ -1,90 +1,157 @@
 {% extends "base.html" %}
 
-{% block title %}Send one{% endblock %}
+{% block title %}Send a Rose{% endblock %}
+
+{% block nav %}
+<a href="{{ url_for('roses.dashboard') }}" class="nav-link">Dashboard</a>
+<a href="/logout" class="nav-link">Sign Out</a>
+{% endblock %}
 
 {% block content %}
+<form action="/send-rose" method="POST" id="roseForm">
 
-<form action="/send-rose" method="POST">
-
-<!-- Steo 1 -->
-<div id="step1">
-
-    <h2>Who shall recieve the roses?</h2>
-
-    <input type="email" name="recipient_email" placeholder="E-Mail" required>
-
-    <button type="button" onclick="showStep(2)">
-        Continue
-    </button>
-
+<!-- Step Indicator -->
+<div class="step-indicator">
+    <span class="step-dot active" id="dot1"></span>
+    <span class="step-dot" id="dot2"></span>
+    <span class="step-dot" id="dot3"></span>
 </div>
 
-<!-- Step 2 -->
-<div id="step2" hidden>
-
-    <h2>Message</h2>
-
-    <textarea name="message" length="200" placeholder="Your nice words..." required></textarea>
-
-    <br>
-
-    <button type="button" onclick="showStep(1)">
-        Back
-    </button>
-
-    <button type="button" onclick="showStep(3)">
-        Preview
-    </button>
-
+<!-- Step 1: Recipient -->
+<div id="step1" class="step-container">
+    <h2>Who&apos;s the lucky one?</h2>
+    <p style="margin-bottom: 2rem;">Enter the email of the person you&apos;d like to send a rose to.</p>
+    
+    <div class="form-group">
+        <label for="recipient_email">Recipient&apos;s Email</label>
+        <input 
+            type="email" 
+            id="recipient_email"
+            name="recipient_email" 
+            placeholder="their-email@example.com" 
+            required
+        >
+    </div>
+    
+    <div class="btn-group" style="justify-content: flex-end; margin-top: 2rem;">
+        <button type="button" class="btn-primary" onclick="showStep(2)">
+            <span>Continue</span>
+            <span aria-hidden="true">&rarr;</span>
+        </button>
+    </div>
 </div>
 
-<!-- Step 3 -->
-<div id="step3" hidden>
+<!-- Step 2: Message -->
+<div id="step2" class="step-container" hidden>
+    <h2>Your Message</h2>
+    <p style="margin-bottom: 2rem;">Write something from the heart. What would you like them to know?</p>
+    
+    <div class="form-group">
+        <label for="message">Your Heartfelt Words</label>
+        <textarea 
+            id="message"
+            name="message" 
+            maxlength="500" 
+            placeholder="Write your message here... Maybe tell them why they&apos;re special, share a memory, or simply let them know you&apos;re thinking of them."
+            required
+        ></textarea>
+    </div>
+    
+    <div class="btn-group" style="justify-content: space-between; margin-top: 2rem;">
+        <button type="button" class="btn-secondary" onclick="showStep(1)">
+            <span aria-hidden="true">&larr;</span>
+            <span>Back</span>
+        </button>
+        <button type="button" class="btn-primary" onclick="showStep(3)">
+            <span>Preview</span>
+            <span aria-hidden="true">&rarr;</span>
+        </button>
+    </div>
+</div>
 
-    <h2>Confirm</h2>
-
-    <p id="preview"></p>
-
-    <button type="button" onclick="showStep(2)">
-        Back
-    </button>
-
-    <button type="submit">
-        Send the Rose 🌹
-    </button>
-
+<!-- Step 3: Preview & Confirm -->
+<div id="step3" class="step-container" hidden>
+    <h2>Ready to Send?</h2>
+    <p style="margin-bottom: 1.5rem;">Review your rose before sending it off.</p>
+    
+    <div class="preview-label">Preview</div>
+    <div id="preview" class="preview-box"></div>
+    
+    <div class="btn-group" style="justify-content: space-between; margin-top: 2rem;">
+        <button type="button" class="btn-secondary" onclick="showStep(2)">
+            <span aria-hidden="true">&larr;</span>
+            <span>Edit Message</span>
+        </button>
+        <button type="submit" class="btn-primary">
+            <span class="rose-icon" style="font-size: 1rem;">&#127801;</span>
+            <span>Send Rose</span>
+        </button>
+    </div>
 </div>
 
 </form>
 
 <script>
-
 function showStep(step) {
-
+    // Hide all steps
     document.getElementById("step1").hidden = true;
     document.getElementById("step2").hidden = true;
     document.getElementById("step3").hidden = true;
-
+    
+    // Update step dots
+    document.getElementById("dot1").classList.remove("active", "completed");
+    document.getElementById("dot2").classList.remove("active", "completed");
+    document.getElementById("dot3").classList.remove("active", "completed");
+    
+    // Show current step and update dots
     document.getElementById("step" + step).hidden = false;
-
-  // Vorschau
-    if (step === 3) {
-
-    const email =
-        document.querySelector(
-        '[name="email"]'
-    ).value;
-
-    const message =
-        document.querySelector(
-        '[name="message"]'
-    ).value;
-
-    document.getElementById("preview").innerText =
-    "The lucky one: " + email + "\n\n" + message;
+    
+    if (step === 1) {
+        document.getElementById("dot1").classList.add("active");
+    } else if (step === 2) {
+        document.getElementById("dot1").classList.add("completed");
+        document.getElementById("dot2").classList.add("active");
+    } else if (step === 3) {
+        document.getElementById("dot1").classList.add("completed");
+        document.getElementById("dot2").classList.add("completed");
+        document.getElementById("dot3").classList.add("active");
+        
+        // Update preview
+        const email = document.getElementById("recipient_email").value;
+        const message = document.getElementById("message").value;
+        
+        document.getElementById("preview").innerHTML = 
+            '<strong style="color: var(--accent-light);">To:</strong> ' + escapeHtml(email) + 
+            '<br><br>' +
+            '<strong style="color: var(--accent-light);">Message:</strong><br>' + 
+            escapeHtml(message);
+    }
 }
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
+// Form validation before moving to next step
+document.querySelector('[onclick="showStep(2)"]').addEventListener('click', function(e) {
+    const email = document.getElementById("recipient_email");
+    if (!email.checkValidity()) {
+        email.reportValidity();
+        e.stopPropagation();
+        return false;
+    }
+});
+
+document.querySelector('[onclick="showStep(3)"]').addEventListener('click', function(e) {
+    const message = document.getElementById("message");
+    if (!message.checkValidity() || message.value.trim() === '') {
+        message.reportValidity();
+        e.stopPropagation();
+        return false;
+    }
+});
 </script>
 
 {% endblock %}

@@ -1,23 +1,38 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roses - {% block title %}{% endblock %}</title>
+    <meta name="description" content="Send beautiful virtual roses with heartfelt messages to the people you care about.">
+    <title>Roses - {% block title %}Send Love{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="page-shell">
         <header class="site-brand">
-            <div class="brand">Roses</div>
+            <a href="/" class="brand">Roses</a>
+            <nav class="nav-links">
+                {% block nav %}{% endblock %}
+            </nav>
         </header>
 
         <main class="content-wrapper">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="message message-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
             {% block content %}{% endblock %}
         </main>
 
         <footer class="page-footer">
-            Crafted in soft pastel pink and deep charcoal tones.
+            <p>Made with love, one rose at a time.</p>
         </footer>
     </div>
 </body>
