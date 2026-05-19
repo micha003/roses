@@ -3,3 +3,4 @@ __pychache__
 instance
 .venv
 .env
+tmp
