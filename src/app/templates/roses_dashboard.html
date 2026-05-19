@@ -2,10 +2,47 @@
 
 {% block title %}Dashboard{% endblock %}
 
+{% block nav %}
+<a href="{{ url_for('roses.send_rose') }}" class="nav-link primary">Send a Rose</a>
+<a href="/logout" class="nav-link">Sign Out</a>
+{% endblock %}
+
 {% block content %}
+<div class="hero" style="padding-bottom: 1.5rem;">
+    <span class="hero-icon" role="img" aria-label="Rose">&#127801;</span>
+    <h1>Your Rose Garden</h1>
+    <p class="subtitle" style="margin-bottom: 0;">Spread love and warmth to those who matter most.</p>
+</div>
 
-<h1>Welcome to the Roses Dashboard</h1>
-<p>Here you can view and send your roses.</p>
-
-<a href="{{ url_for('roses.send_rose') }}">Send a Rose</a>
+<div class="dashboard-grid">
+    <a href="{{ url_for('roses.send_rose') }}" class="dashboard-action">
+        <div class="dashboard-action-icon">
+            <span role="img" aria-hidden="true">&#9993;</span>
+        </div>
+        <div class="dashboard-action-content">
+            <h3>Send a Rose</h3>
+            <p>Write a heartfelt message and brighten someone&apos;s day with a virtual rose.</p>
+        </div>
+    </a>
+    
+    <a href="#" class="dashboard-action" style="opacity: 0.6; pointer-events: none;">
+        <div class="dashboard-action-icon" style="background: var(--surface-strong); box-shadow: none;">
+            <span role="img" aria-hidden="true">&#128140;</span>
+        </div>
+        <div class="dashboard-action-content">
+            <h3>My Received Roses</h3>
+            <p>View the roses and messages you&apos;ve received from others.</p>
+        </div>
+    </a>
+    
+    <a href="#" class="dashboard-action" style="opacity: 0.6; pointer-events: none;">
+        <div class="dashboard-action-icon" style="background: var(--surface-strong); box-shadow: none;">
+            <span role="img" aria-hidden="true">&#128228;</span>
+        </div>
+        <div class="dashboard-action-content">
+            <h3>Sent History</h3>
+            <p>See all the roses you&apos;ve sent and the joy you&apos;ve spread.</p>
+        </div>
+    </a>
+</div>
 {% endblock %}
