@@ -56,13 +56,6 @@ def send_rose():
             flash(f"Invalid recipient email: {error_msg}", "error")
             return render_template("send_rose.html")
 
-        # Sanitize and validate recipient name
-        recipient_name = sanitize_string(data.get("recipient_name", ""), max_length=100)
-        is_valid, error_msg = is_valid_name(recipient_name)
-        if not is_valid:
-            flash(f"Invalid recipient name: {error_msg}", "error")
-            return render_template("send_rose.html")
-
         # Sanitize and validate message
         message = sanitize_string(data.get("message", ""), max_length=500)
         is_valid, error_msg = is_valid_message(message)
@@ -72,7 +65,6 @@ def send_rose():
 
         # Escape all user inputs for XSS protection before storing
         recipient_email = escape(recipient_email)
-        recipient_name = escape(recipient_name)
         message = escape(message)
 
         # Create rose using ORM (parameterized, safe from SQL injection)
